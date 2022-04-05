@@ -2,6 +2,7 @@ import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from './components/Header';
 import Search from './components/Search';
+import ImageCard from './components/ImageCard';
 
 const UNSPLASH_KEY = process.env.REACT_APP_UNSPLASH_KEY;
 
@@ -18,7 +19,7 @@ const App = () => {
       .then((res) => res.json())
       .then((data) => {
         console.log(images);
-        stetImages([data, ...images]);
+        stetImages([{ ...data, tittle: word }, ...images]);
       })
       .catch((err) => {
         console.log(err);
@@ -32,6 +33,8 @@ const App = () => {
     <div>
       <Header tittle="Image Gallery" />
       <Search word={word} setWord={setWord} handleSubmit={handleSearchSubmit} />
+      {!!images.length && <ImageCard image={images[0]} />}
+      {images.length > 1 && <ImageCard image={images[1]} />}
     </div>
   );
 };
