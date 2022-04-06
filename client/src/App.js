@@ -9,7 +9,7 @@ const UNSPLASH_KEY = process.env.REACT_APP_UNSPLASH_KEY;
 
 const App = () => {
   const [word, setWord] = useState('');
-  const [images, stetImages] = useState([]);
+  const [images, setImages] = useState([]);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -20,12 +20,16 @@ const App = () => {
       .then((res) => res.json())
       .then((data) => {
         console.log(images);
-        stetImages([{ ...data, tittle: word }, ...images]);
+        setImages([{ ...data, tittle: word }, ...images]);
       })
       .catch((err) => {
         console.log(err);
       });
     setWord('');
+  };
+
+  const handleDeleteImage = (id) => {
+    setImages(images.filter((image) => image.id !== id));
   };
 
   // console.log(word)
@@ -38,7 +42,7 @@ const App = () => {
         <Row xs={1} md={2} lg={3}>
           {images.map((image, i) => (
             <Col key={i} className="mb-3">
-              <ImageCard image={image} />
+              <ImageCard image={image} deleteImage={handleDeleteImage} />
             </Col>
           ))}
         </Row>
