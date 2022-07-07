@@ -15,7 +15,9 @@ services:
     restart: always
     build: ./api
     ports:
-    - '5050:5050'
+      - '5050:5050'
+    volumes:
+      - ./api:/app
   mongo:
     image: mongo
     restart: always
