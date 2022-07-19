@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from './components/Header';
 import Search from './components/Search';
@@ -12,26 +13,22 @@ const App = () => {
   const [word, setWord] = useState('');
   const [images, setImages] = useState([]);
 
-  const handleSearchSubmit = (e) => {
+  const handleSearchSubmit = async (e) => {
     e.preventDefault();
-    console.log(word);
-    fetch(`${API_URL}/new-image?query=${word}`)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(images);
-        setImages([{ ...data, tittle: word }, ...images]);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+
+    try {
+      const res = await axios.get(`${API_URL}/new-image?query=${word}`);
+      setImages([{ ...res.data, tittle: word }, ...images]);
+    } catch (error) {
+      console.log(error);
+    }
+
     setWord('');
   };
 
   const handleDeleteImage = (id) => {
     setImages(images.filter((image) => image.id !== id));
   };
-
-  // console.log(word)
 
   return (
     <div>
